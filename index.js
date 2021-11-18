@@ -1,8 +1,33 @@
+// Instalar o MongoDB
+
+
+// Importar o MongoDB
+
+const {MongoClient,ObjectId} = require('mongodb');
 const express = require("express");
 const app = express();
 
+const url='mongodb://localhost:27017';
+const dbName = 'oceandb';
+
+//const client = new MongoClient(url);
+async function main() {
+
+// Realizar a conexão com o banco de dados
+const client = await MongoClient.connect(url);
+
+// Procurar pela collection que criamos
+// Realizar as operações
+
+const db = client.db(dbName);
+
+const collection = db.collection('herois');
+
+
 // Informando para o Express considerar o corpo da requisição
 // em formato JSON
+
+
 app.use(express.json());
 
 app.get("/", function (req, res) {
@@ -17,19 +42,24 @@ const herois = ["Mulher Maravilha", "Capitã Marvel", "Homem de Ferro"];
 //               0                   1                2
 
 // [GET] "/herois" - Read All (Ler tudo)
-app.get("/herois", function (req, res) {
-    res.send(herois.filter(Boolean));
+app.get("/herois",async function (req, res) {
+    const documentos = await collection.find().toArray();
+    
+    // res.send(herois.filter(Boolean));
+    res.send(documentos);
+
+
 });
 
 // [GET] "/herois/:id" - Read Single By Id (Ler individualmente - pelo Id)
-app.get("/herois/:id", function (req, res) {
+app.get("/herois/:id", async function (req, res) {
     // Lógica de obtenção do ID
-    const id = +req.params.id - 1;
+    const id = req.params.id ;
 
     // console.log(id, typeof id);
 
     // Lógica de acesso ao dados
-    const item = herois[id];
+    const item = await collection.findOne({ _id:new ObjectId(id)});
 
     // Lógica de envio desse dado encontrado
     res.send(item);
@@ -39,29 +69,48 @@ app.get("/herois/:id", function (req, res) {
 app.post("/herois", function (req, res) {
     const item = req.body;
 
-    herois.push(item.nome);
+    collection.insertOne(item);
+    // herois.push(item.nome);
 
     res.send("Registro criado com sucesso: " + item.nome);
 });
 
 // [PUT] "/herois/:id" - Update (Atualizar)
-app.put("/herois/:id", function (req, res) {
-    const id = +req.params.id - 1;
+app.put("/herois/:id", async function (req, res) {
+    const id = req.params.id ;
+
+    
 
     const item = req.body;
 
-    herois[id] = item.nome;
+    await collection.updateOne(
 
+        {_id: new ObjectId(id)},
+        {
+            $set: item,
+        }
+
+    );
+
+
+
+    // herois[id] = item.nome;
+//anota
     res.send("Registro atualizado com sucesso: " + item.nome);
 });
 
 // [DELETE] "/herois/:id" - Delete (Remover)
-app.delete("/herois/:id", function (req, res) {
-    const id = +req.params.id - 1;
+app.delete("/herois/:id", async function  (req, res) {
+     const id = req.params.id ;
 
-    delete herois[id];
+    // delete herois[id];
 
+    await collection.deleteOne({_id: new ObjectId(id)});
     res.send("Registro removido com sucesso.");
 });
 
-app.listen(3000);
+app.listen(80);
+
+} 
+
+main();
