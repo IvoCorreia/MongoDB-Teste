@@ -7,21 +7,24 @@ const {MongoClient,ObjectId} = require('mongodb');
 const express = require("express");
 const app = express();
 
-const url='mongodb://localhost:27017';
-const dbName = 'oceandb';
+// const url='mongodb://localhost:27017';
+// const dbName = 'oceandb';
 
 //const client = new MongoClient(url);
 async function main() {
 
-// Realizar a conexão com o banco de dados
-const client = await MongoClient.connect(url);
+// // Realizar a conexão com o banco de dados
+// const client = await MongoClient.connect(url);
 
-// Procurar pela collection que criamos
-// Realizar as operações
+// // Procurar pela collection que criamos
+// // Realizar as operações
 
-const db = client.db(dbName);
+// const db = client.db(dbName);
 
-const collection = db.collection('herois');
+// const collection = db.collection('herois');
+
+const collection = undefined;
+
 
 
 // Informando para o Express considerar o corpo da requisição
@@ -109,7 +112,7 @@ app.delete("/herois/:id", async function  (req, res) {
     res.send("Registro removido com sucesso.");
 });
 
-app.listen(80);
+app.listen(process.env.PORT || 80);
 
 } 
 
