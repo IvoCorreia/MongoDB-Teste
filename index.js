@@ -10,7 +10,7 @@ const app = express();
   const url='mongodb+srv://ivogiordano:b4nc0@banc0db@cluster0.15uk8.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
   const dbName = 'oceandb';
 
- const client = new MongoClient(url);
+// const client = new MongoClient(url);
 async function main() {
 
 // // Realizar a conexão com o banco de dados
