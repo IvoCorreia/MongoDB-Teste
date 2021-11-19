@@ -7,23 +7,23 @@ const {MongoClient,ObjectId} = require('mongodb');
 const express = require("express");
 const app = express();
 
-// const url='mongodb://localhost:27017';
-// const dbName = 'oceandb';
+  const url='mongodb+srv://ivogiordano:b4nc0@banc0db@cluster0.15uk8.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+  const dbName = 'oceandb';
 
-//const client = new MongoClient(url);
+ const client = new MongoClient(url);
 async function main() {
 
 // // Realizar a conexão com o banco de dados
-// const client = await MongoClient.connect(url);
+  const client = await MongoClient.connect(url);
 
 // // Procurar pela collection que criamos
 // // Realizar as operações
 
-// const db = client.db(dbName);
+  const db = client.db(dbName);
 
-// const collection = db.collection('herois');
+  const collection = db.collection('herois');
 
-const collection = undefined;
+//const collection = undefined;
 
 
 
